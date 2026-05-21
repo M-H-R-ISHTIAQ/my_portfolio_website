@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+
+    <link rel="icon" type="image/png" href="nav-profile.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Star Tech inspired palette */
+            --bg: #081621;            
+            --accent: #38bdf8;        
+            --text: #f1f5f9;          
+            --text-muted: #94a3b8;    
+            --card-bg: #111d2a;       
+            --footer-bg: #07121c;     
+            --st-orange: #ef4444;     
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVIGATION BAR --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(8, 22, 33, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .nav-home-pic {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .nav-home-pic:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .line {
+            width: 26px;
+            height: 3px;
+            background-color: var(--accent);
+            border-radius: 2px;
+        }
+
+        /* --- BACKGROUND BLUR OVERLAY --- */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(4, 10, 15, 0.5);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1001;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* --- SIDE DRAWER MENU --- */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 300px;
+            height: 100%;
+            background: #0b141d;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 24px;
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1002;
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .side-menu.active { right: 0; }
+
+        .drawer-header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .back-arrow-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.2s ease;
+            padding: 5px;
+        }
+
+        .back-arrow-btn:hover {
+            color: var(--accent);
+            transform: translateX(-3px);
+        }
+
+        .side-menu-links {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .side-menu-links a {
+            font-size: 1.2rem;
+            color: var(--text);
+            text-decoration: none;
+            margin: 0.8rem 0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: color 0.2s, padding-left 0.2s;
+        }
+
+        .side-menu-links a i {
+            font-size: 1rem;
+            color: var(--text-muted);
+            width: 20px;
+            transition: color 0.2s;
+        }
+
+        .side-menu-links a.ai-btn i { color: #a855f7; }
+
+        .side-menu-links a:hover {
+            color: var(--accent);
+            padding-left: 6px;
+        }
+
+        .side-menu-links a:hover i { color: var(--accent); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #111d2a 0%, #081621 100%);
+            padding-top: 80px;
+        }
+
+        .profile-pic {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid var(--accent);
+            object-fit: cover;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+        }
+
+        .hero h1 { font-size: 3.5rem; color: white; }
+        .hero p { font-size: 1.2rem; color: var(--accent); font-weight: bold; }
+
+        /* --- ABOUT SECTION (CENTERED QUICK PREVIEW) --- */
+        section#about-preview {
+            padding: 100px 10%;
+            max-width: 1000px;
+            margin: auto;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 { font-size: 2.5rem; margin-bottom: 20px; color: var(--accent); }
+
+        .about-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+            max-width: 650px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .view-more-btn {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: opacity 0.2s;
+        }
+        .view-more-btn:hover { text-decoration: underline; opacity: 0.9; }
+
+        /* --- STAR TECH FOOTER --- */
+        .footer-divider {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, rgba(56, 189, 248, 0), rgba(56, 189, 248, 0.3), rgba(56, 189, 248, 0));
+            margin-top: 60px;
+        }
+
+        footer {
+            background-color: var(--footer-bg);
+            padding: 60px 8% 30px 8%;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .footer-column {
+            text-align: left;
+            min-width: 280px;
+        }
+
+        .footer-column h3 {
+            color: #ffffff;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .support-card {
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50px;
+            padding: 12px 25px;
+            margin-bottom: 15px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            max-width: 320px;
+        }
+
+        .support-card:hover {
+            border-color: var(--accent);
+            background: rgba(56, 189, 248, 0.03);
+        }
+
+        .support-card i {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+
+        .support-card .info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .support-card .label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .support-card .value {
+            color: var(--st-orange);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 2px;
+        }
+
+        .contact-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .email-link {
+            color: var(--st-orange);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .email-link:hover {
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .social-icons a:hover {
+            background: var(--accent);
+            color: var(--bg);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <img src="nav-profile.png" alt="Home" class="nav-home-pic" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
+        <button class="menu-btn" onclick="openMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </button>
+    </nav>
+
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+    <div class="side-menu" id="sideMenu">
+        <div class="drawer-header">
+            <button class="back-arrow-btn" onclick="closeMenu()">
+                <i class="fa-solid fa-arrow-right-to-bracket fa-flip-horizontal"></i>
+            </button>
+        </div>
+        <div class="side-menu-links">
+            <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="Services.html"><i class="fa-solid fa-briefcase"></i> My Services</a>
+            <a href="About.html"><i class="fa-solid fa-user"></i> About Me</a>
+            <a href="Contact.html"><i class="fa-solid fa-address-book"></i> Contact</a>
+            <a href="Ai.html" class="ai-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> Ask AI</a>
+        </div>
+    </div>
+
+    <section class="hero">
+        <img src="hero-profile.png" alt="Ishtiaq" class="profile-pic">
+        <h1>Md. Hafizur Rahman Ishtiaq</h1>
+        <p>Virtual Assistant | Lead Gen Specialist | Graphic Designer</p>
+    </section>
+
+    <section id="about-preview">
+        <h2>Who Am I?</h2>
+        <div class="about-content">
+            <p>I am Md. Hafizur Rahman Ishtiaq, a first-year HSC Science student with a passion for technology and efficiency.</p>
+            <a href="About.html" class="view-more-btn">Read Full Profile Details →</a>
+        </div>
+    </section>
+
+    <hr class="footer-divider">
+
+    <footer>
+        <div class="footer-container">
+            
+            <div class="footer-column">
+                <h3>Support</h3>
+                <a href="mailto:mdishtiaq2008@gmail.com" class="support-card">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div class="info">
+                        <span class="label">Available 24/7 via Email</span>
+                        <span class="value">Get In Touch</span>
+                    </div>
+                </a>
+
+                <div class="support-card" style="cursor: default;">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div class="info">
+                        <span class="label">Service Location</span>
+                        <span class="value" style="color: var(--accent); font-size: 0.95rem;">Mirpur, Dhaka</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h3>Contact Info</h3>
+                <p class="contact-text"><strong>M. H. R. Ishtiaq</strong><br>
+                Pallabi Thana, Mirpur 6,<br>
+                Dhaka North City Corporation, Bangladesh</p>
+                
+                <p class="contact-text" style="margin-bottom: 5px; font-size: 0.8rem; text-transform: uppercase;">Email:</p>
+                <a href="mailto:mdishtiaq2008@gmail.com" class="email-link">mdishtiaq2008@gmail.com</a>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p class="copyright">© 2026 Ishtiaq | All rights reserved</p>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/md.ishtiaq.09" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.linkedin.com/in/md-hafizur-rahman-ishtiaq-066b193b4" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://github.com/M-H-R-ISHTIAQ" target="_blank"><i class="fa-brands fa-github"></i></a>
+                <a href="https://wa.me/8801727530922" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const sideMenu = document.getElementById('sideMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        function openMenu() {
+            sideMenu.classList.add('active');
+            menuOverlay.classList.add('active');
+        }
+
+        function closeMenu() {
+            sideMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+        }
+    </script>
+
+</body>
+</html>

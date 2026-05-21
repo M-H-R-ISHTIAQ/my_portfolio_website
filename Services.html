@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Services | Ishtiaq</title>
+    <link rel="icon" type="image/png" href="nav-profile.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #081621;            
+            --accent: #38bdf8;        
+            --text: #f1f5f9;          
+            --text-muted: #94a3b8;    
+            --card-bg: #111d2a;       
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; }
+        
+        /* --- NAVIGATION & MENU --- */
+        nav { position: fixed; top: 0; width: 100%; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(8, 22, 33, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
+        .nav-home-pic { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; cursor: pointer; }
+        .menu-btn { cursor: pointer; display: flex; flex-direction: column; gap: 6px; background: none; border: none; }
+        .line { width: 26px; height: 3px; background-color: var(--accent); border-radius: 2px; }
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 10, 15, 0.5); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1001; }
+        .menu-overlay.active { opacity: 1; pointer-events: auto; }
+        .side-menu { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: #0b141d; box-shadow: -10px 0 30px rgba(0, 0, 0, 0.4); display: flex; flex-direction: column; padding: 30px 24px; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1002; border-left: 1px solid rgba(255, 255, 255, 0.05); }
+        .side-menu.active { right: 0; }
+        .drawer-header { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 40px; }
+        .back-arrow-btn { background: none; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer; padding: 5px; }
+        .side-menu-links { display: flex; flex-direction: column; }
+        .side-menu-links a { font-size: 1.2rem; color: var(--text); text-decoration: none; margin: 0.8rem 0; font-weight: 500; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        .side-menu-links a i { font-size: 1rem; color: var(--text-muted); width: 20px; }
+        .side-menu-links a.ai-btn i { color: #a855f7; }
+
+        /* --- SERVICES PAGE SPECIFIC CONTENT --- */
+        .services-container { padding: 140px 8% 60px 8%; max-width: 1200px; margin: auto; text-align: center; }
+        h2 { font-size: 2.5rem; color: var(--accent); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .subtitle { color: var(--text-muted); margin-bottom: 50px; font-size: 1.1rem; }
+        
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .service-card { background: var(--card-bg); padding: 40px 25px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.04); text-align: left; transition: transform 0.3s ease, border-color 0.3s ease; }
+        .service-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .service-card i { font-size: 2.8rem; color: var(--accent); margin-bottom: 20px; }
+        .service-card h3 { font-size: 1.5rem; margin-bottom: 12px; color: #ffffff; }
+        .service-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <img src="nav-profile.png" alt="Home" class="nav-home-pic" onclick="window.location.href='index.html'">
+        <button class="menu-btn" onclick="openMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </button>
+    </nav>
+
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+    <div class="side-menu" id="sideMenu">
+        <div class="drawer-header">
+            <button class="back-arrow-btn" onclick="closeMenu()">
+                <i class="fa-solid fa-arrow-right-to-bracket fa-flip-horizontal"></i>
+            </button>
+        </div>
+        <div class="side-menu-links">
+            <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="Services.html"><i class="fa-solid fa-briefcase"></i> My Services</a>
+            <a href="About.html"><i class="fa-solid fa-user"></i> About Me</a>
+            <a href="Contact.html"><i class="fa-solid fa-address-book"></i> Contact</a>
+            <a href="Ai.html" class="ai-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> Ask AI</a>
+        </div>
+    </div>
+
+    <div class="services-container">
+        <h2>Professional Solutions</h2>
+        <p class="subtitle">High-fidelity execution optimized for speed and structural accuracy.</p>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <i class="fa-solid fa-list-check"></i>
+                <h3>Virtual Assistant Solutions</h3>
+                <p>Administrative task handling, routine business management, data operations, and automated organization systems designed to maximize productivity metrics.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-bullseye"></i>
+                <h3>Targeted Lead Generation</h3>
+                <p>B2B client mining and highly vetted target lists. Verified extraction mapping complete profiles with accurate formatting ready for sales pipeline imports.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-palette"></i>
+                <h3>Graphic Layouts & Asset Design</h3>
+                <p>Custom media layout optimization using advanced technical rendering toolsets. Production-ready branding components, letterheads, and layout assets built to specification.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sideMenu = document.getElementById('sideMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+        function openMenu() { sideMenu.classList.add('active'); menuOverlay.classList.add('active'); }
+        function closeMenu() { sideMenu.classList.remove('active'); menuOverlay.classList.remove('active'); }
+    </script>
+</body>
+</html>

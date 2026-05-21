@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me | Ishtiaq</title>
+    <link rel="icon" type="image/png" href="nav-profile.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #081621;            
+            --accent: #38bdf8;        
+            --text: #f1f5f9;          
+            --text-muted: #94a3b8;    
+            --card-bg: #111d2a;       
+            --footer-bg: #07121c;     
+            --st-orange: #ef4444;     
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; }
+        
+        nav { position: fixed; top: 0; width: 100%; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(8, 22, 33, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
+        .nav-home-pic { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; cursor: pointer; }
+        .menu-btn { cursor: pointer; display: flex; flex-direction: column; gap: 6px; background: none; border: none; }
+        .line { width: 26px; height: 3px; background-color: var(--accent); border-radius: 2px; }
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 10, 15, 0.5); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1001; }
+        .menu-overlay.active { opacity: 1; pointer-events: auto; }
+        .side-menu { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: #0b141d; box-shadow: -10px 0 30px rgba(0, 0, 0, 0.4); display: flex; flex-direction: column; padding: 30px 24px; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1002; border-left: 1px solid rgba(255, 255, 255, 0.05); }
+        .side-menu.active { right: 0; }
+        .drawer-header { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 40px; }
+        .back-arrow-btn { background: none; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer; padding: 5px; }
+        .side-menu-links { display: flex; flex-direction: column; }
+        .side-menu-links a { font-size: 1.2rem; color: var(--text); text-decoration: none; margin: 0.8rem 0; font-weight: 500; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        .side-menu-links a i { font-size: 1rem; color: var(--text-muted); width: 20px; }
+        .side-menu-links a.ai-btn i { color: #a855f7; }
+
+        .about-container { padding: 140px 10% 60px 10%; max-width: 900px; margin: auto; text-align: center; }
+        h2 { font-size: 2.5rem; color: var(--accent); margin-bottom: 30px; text-transform: uppercase; }
+        .bio-card { background: var(--card-bg); padding: 40px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .bio-card p { font-size: 1.1rem; color: var(--text); margin-bottom: 20px; line-height: 1.8; }
+        .skills-tag-container { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 25px; }
+        .skill-tag { background: rgba(56, 189, 248, 0.06); border: 1px solid rgba(56, 189, 248, 0.2); color: var(--accent); padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 500; }
+
+        /* --- FOOTER STYLES --- */
+        .footer-divider {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, rgba(56, 189, 248, 0), rgba(56, 189, 248, 0.3), rgba(56, 189, 248, 0));
+            margin-top: 60px;
+        }
+        footer {
+            background-color: var(--footer-bg);
+            padding: 60px 8% 30px 8%;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        .footer-column { text-align: left; min-width: 280px; }
+        .footer-column h3 {
+            color: #ffffff;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        .support-card {
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50px;
+            padding: 12px 25px;
+            margin-bottom: 15px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            max-width: 320px;
+        }
+        .support-card:hover {
+            border-color: var(--accent);
+            background: rgba(56, 189, 248, 0.03);
+        }
+        .support-card i { color: #ffffff; font-size: 1.2rem; margin-right: 15px; }
+        .support-card .info { display: flex; flex-direction: column; }
+        .support-card .label { color: var(--text-muted); font-size: 0.75rem; }
+        .support-card .value { color: var(--st-orange); font-weight: 700; font-size: 1.1rem; margin-top: 2px; }
+        .contact-text { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 15px; }
+        .email-link { color: var(--st-orange); text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+        .email-link:hover { text-decoration: underline; }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .copyright { color: var(--text-muted); font-size: 0.8rem; }
+        .social-icons { display: flex; gap: 15px; }
+        .social-icons a {
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        .social-icons a:hover {
+            background: var(--accent);
+            color: var(--bg);
+            transform: translateY(-3px);
+        }
+        @media (max-width: 768px) {
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <img src="nav-profile.png" alt="Home" class="nav-home-pic" onclick="window.location.href='index.html'">
+        <button class="menu-btn" onclick="openMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </button>
+    </nav>
+
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+    <div class="side-menu" id="sideMenu">
+        <div class="drawer-header">
+            <button class="back-arrow-btn" onclick="closeMenu()">
+                <i class="fa-solid fa-arrow-right-to-bracket fa-flip-horizontal"></i>
+            </button>
+        </div>
+        <div class="side-menu-links">
+            <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="Services.html"><i class="fa-solid fa-briefcase"></i> My Services</a>
+            <a href="About.html"><i class="fa-solid fa-user"></i> About Me</a>
+            <a href="Contact.html"><i class="fa-solid fa-address-book"></i> Contact</a>
+            <a href="Ai.html" class="ai-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> Ask AI</a>
+        </div>
+    </div>
+
+    <div class="about-container">
+        <h2>Who Am I?</h2>
+        <div class="bio-card">
+            <p>I am Md. Hafizur Rahman Ishtiaq, an Intermediate 1st-year Science student with an active foundation in technological workflows, complex computation mechanics, and data-driven solutions.</p>
+            <p>Balancing academic science with real-world freelancing, I design structural systems for business management and accurate digital pipeline processes.</p>
+            
+            <div class="skills-tag-container">
+                <span class="skill-tag">Data Infrastructure</span>
+                <span class="skill-tag">Lead Mining</span>
+                <span class="skill-tag">Asset Layout Design</span>
+                <span class="skill-tag">Script Automation</span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="footer-divider">
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Support</h3>
+                <a href="mailto:mdishtiaq2008@gmail.com" class="support-card">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div class="info">
+                        <span class="label">Available 24/7 via Email</span>
+                        <span class="value">Get In Touch</span>
+                    </div>
+                </a>
+                <div class="support-card" style="cursor: default;">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div class="info">
+                        <span class="label">Service Location</span>
+                        <span class="value" style="color: var(--accent); font-size: 0.95rem;">Mirpur, Dhaka</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h3>Contact Info</h3>
+                <p class="contact-text"><strong>M. H. R. Ishtiaq</strong><br>
+                Pallabi Thana, Mirpur 6,<br>
+                Dhaka North City Corporation, Bangladesh</p>
+                <p class="contact-text" style="margin-bottom: 5px; font-size: 0.8rem; text-transform: uppercase;">Email:</p>
+                <a href="mailto:mdishtiaq2008@gmail.com" class="email-link">mdishtiaq2008@gmail.com</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="copyright">© 2026 Ishtiaq | All rights reserved</p>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/md.ishtiaq.09" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.linkedin.com/in/md-hafizur-rahman-ishtiaq-066b193b4" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://github.com/M-H-R-ISHTIAQ" target="_blank"><i class="fa-brands fa-github"></i></a>
+                <a href="https://wa.me/8801727530922" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const sideMenu = document.getElementById('sideMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+        function openMenu() { sideMenu.classList.add('active'); menuOverlay.classList.add('active'); }
+        function closeMenu() { sideMenu.classList.remove('active'); menuOverlay.classList.remove('active'); }
+    </script>
+</body>
+</html>
